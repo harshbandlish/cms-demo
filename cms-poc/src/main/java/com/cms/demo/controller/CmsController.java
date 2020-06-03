@@ -1,5 +1,6 @@
 package com.cms.demo.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -7,16 +8,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cms.demo.service.CmsHTTPClient;
+
 
 @RestController
 @RequestMapping("cms")
 public class CmsController {
 	
+	@Autowired
+	CmsHTTPClient httpClient;
+	
+	 
 	@GetMapping (produces = {MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
 	public ResponseEntity<String> getUsers() {
 		
 		System.out.println("Log: Successfully Connected to CMS Service");
-		return new ResponseEntity<String>("Successfully Connected to CMS Service", HttpStatus.OK);
+		String reponseString = httpClient.getCMSContent();
+		return new ResponseEntity<String>(reponseString, HttpStatus.OK);
 	}
 	
 	/*
